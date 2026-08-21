@@ -29,7 +29,7 @@ uvicorn main:app --reload
 
 После запуска документация API доступна по адресу `http://127.0.0.1:8000/docs`
 
-#Эндпоинты
+## Эндпоинты
   Метод  Путь                        Описание
   POST   '/students/{students_id}'   Создать студента
   GET    '/students/{students_name}' Найти студента по имени
