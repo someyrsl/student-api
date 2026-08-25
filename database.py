@@ -1,18 +1,12 @@
-import sqlite3
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Base
+
+engine = create_engine("sqlite:///school.db")
+SessionLocal = sessionmaker(bind = engine)
 
 def get_connection():
-    return sqlite3.connect("school.db")
+    return SessionLocal()
 
 def init_db():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS students (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            age INTEGER,
-            grade REAL
-        )
-    """)
-    conn.commit()
-    conn.close()
+    Base.metadata.create_all(engine)

@@ -3,11 +3,14 @@
 Проект представляет собой простой backend на FastAPI для управлением данными студентов
 Также данный проект выступает как мой личный проект для практики REST API и работой с базами данных
 
+> Изначально проект использовал прямые SQL-запросы через `sqlite3`, позже переписан на SQLAlchemy (ORM) для более чистой и безопасной работы с базой данных.
+
 ## Стэк
 
 Python 3
 FastAPI
 SQLite
+SQLAlchemy (ORM)
 
 ## Функциональность
 1. Создание, получение, обновление, и удаление записей о студентах (CRUD)
@@ -18,15 +21,15 @@ SQLite
 
 ```
 main.py       — точка входа и подключение роутеров
-models.py      — Pydantic-модели
-database.py     — подключение к базе данных
+models.py      — модели данных (Pydantic + SQLAlchemy)
+database.py     — подключение к базе данных через SQLAlchemy (engine, сессии)
 students.py      — эндпоинты для работы со студентами
 ```
 
 ## Запуск
 
 ```bash
-pip install fastapi uvicorn
+pip install fastapi uvicorn sqlalchemy
 uvicorn main:app --reload
 ```
 
