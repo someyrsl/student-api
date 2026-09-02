@@ -1,18 +1,32 @@
 from pydantic import BaseModel
-from sqlalchemy import  Column, Integer, String, Float
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import  Column, Integer, String, Float, ForeignKey
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
 class Student(BaseModel):
     name: str
     age: int
-    grade: float
+
+class Grade(BaseModel):
+    score: float
+    subject: str
 
 class StudentDB(Base):
     __tablename__ = "students"
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
+    id = Column(Integer, primary_key = True)
+    name = Column(String, nullable = False)
     age = Column(Integer)
-    grade = Column(Float)
+    
+    grades = relationship("GradeDB", back_populates = "student")
+    
+class GradeDB(Base):
+    __tablename__ = "grades"
+
+    id = Column(Integer, primary_key = True)
+    score = Column(Float)
+    student_id = Column(Integer, ForeignKey("students.id"))
+    subject = Column(String)
+
+    student = relationship("StudentDB", back_populates = "grades")
