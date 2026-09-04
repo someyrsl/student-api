@@ -1,11 +1,12 @@
-from fastapi import HTTPException, APIRouter
+from fastapi import HTTPException, APIRouter, Depends
 from models import Student, StudentDB, GradeDB, Grade
 from database import get_connection
+from auth import get_current_user
 
 router = APIRouter()
 
 @router.post("/students/{student_id}")
-def add_student(student_id: int, student: Student):
+def add_student(student_id: int, student: Student, current_user: str = Depends(get_current_user)):
     session = get_connection()
     existing = session.query(StudentDB).filter(StudentDB.id == student_id).first()
     if existing:
@@ -32,7 +33,7 @@ def get_grades(student_id: int):
     return {"student": student.name, "grades": grades}
 
 @router.put("/students/{student_id}/grades/{grade_id}")
-def update_grade(student_id: int, grade_id: int, new_score: float):
+def update_grade(student_id: int, grade_id: int, new_score: float, current_user: str = Depends(get_current_user)):
     session = get_connection()
     found = session.query(GradeDB).filter(GradeDB.id == grade_id, GradeDB.student_id == student_id).first()
     if not found:
@@ -45,7 +46,7 @@ def update_grade(student_id: int, grade_id: int, new_score: float):
           return {"status": "updated", "student_id": student_id, "grade": new_score}
 
 @router.delete("/students/{student_id}")
-def delete_student(student_id: int):
+def delete_student(student_id: int, current_user: str = Depends(get_current_user)):
     session = get_connection()
     found = session.query(StudentDB).filter(StudentDB.id == student_id).first()
     if not found:
@@ -58,7 +59,7 @@ def delete_student(student_id: int):
           return {"status": "Студент удален"}
 
 @router.post("/students/{student_id}/grades")
-def add_grade(student_id: int, grade: Grade):
+def add_grade(student_id: int, grade: Grade, current_user: str = Depends(get_current_user)):
       session = get_connection()
       found = session.query(StudentDB).filter(StudentDB.id == student_id).first()
       if not found:

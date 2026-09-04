@@ -12,6 +12,10 @@ class Grade(BaseModel):
     score: float
     subject: str
 
+class Users(BaseModel):
+    username: str
+    password: str
+
 class StudentDB(Base):
     __tablename__ = "students"
 
@@ -30,3 +34,10 @@ class GradeDB(Base):
     subject = Column(String)
 
     student = relationship("StudentDB", back_populates = "grades")
+
+class UsersDB(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key = True)
+    username = Column(String, nullable = False, unique = True)
+    hashed_password = Column(String, nullable = True)
