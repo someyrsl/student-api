@@ -3,7 +3,6 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-# from auth import decode_access_token
 
 SECRET_KEY = "Omniscient-Readers-Viewpoint"
 ALGORITHM = "HS256"
